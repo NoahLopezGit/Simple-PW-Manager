@@ -1,2 +1,3 @@
-pw_hashes.dat
+passwords.txt
+encryption_key.key
 pwman_venv

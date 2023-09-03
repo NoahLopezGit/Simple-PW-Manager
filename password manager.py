@@ -1,6 +1,17 @@
 import os
 from cryptography.fernet import Fernet
 
+# List all stored passwords
+def list_passwords():
+    with open("passwords.txt", "r") as password_file:
+        print("\nStored Passwords:")
+        for line in password_file:
+            parts = line.split(" | ")
+            if len(parts) == 3:
+                website = parts[0]
+                username = parts[1]
+                print(f"Website: {website}, Username: {username}")
+
 # Generate a random encryption key
 def generate_key():
     return Fernet.generate_key()
@@ -37,7 +48,8 @@ def main():
         print("\nPassword Manager Menu:")
         print("1. Store a new password")
         print("2. Retrieve a password")
-        print("3. Exit")
+        print("3. List all passwords")
+        print("4. Exit")
         choice = input("Enter your choice: ")
 
         if choice == "1":
@@ -65,7 +77,10 @@ def main():
                 else:
                     print("Password not found!")
 
-        elif choice == "3":
+        elif choice=="3":
+            list_passwords()
+
+        elif choice == "4":
             print("Exiting Password Manager.")
             break
 
