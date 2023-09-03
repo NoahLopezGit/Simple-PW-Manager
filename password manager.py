@@ -1,8 +1,9 @@
 import os
+from password_handling import check_main_password
 from cryptography.fernet import Fernet
 
 # List all stored passwords
-def list_passwords():
+def list_passwords(key):
     with open("passwords.txt", "r") as password_file:
         print("\nStored Passwords:")
         for line in password_file:
@@ -10,23 +11,9 @@ def list_passwords():
             if len(parts) == 3:
                 website = parts[0]
                 username = parts[1]
-                print(f"Website: {website}, Username: {username}")
-
-# Generate a random encryption key
-def generate_key():
-    return Fernet.generate_key()
-
-# Initialize the encryption key
-def initialize_key():
-    key_file = "encryption_key.key"
-    if os.path.exists(key_file):
-        with open(key_file, "rb") as key_file:
-            key = key_file.read()
-    else:
-        key = generate_key()
-        with open(key_file, "wb") as key_file:
-            key_file.write(key)
-    return key
+                encrypted_password = bytes.fromhex(parts[2])
+                decrypted_password = decrypt_password(key, encrypted_password)
+                print(f"Title: {website}\n Username: {username}\n Password: {decrypted_password}\n")
 
 # Encrypt a password
 def encrypt_password(key, password):
@@ -42,7 +29,7 @@ def decrypt_password(key, encrypted_password):
 
 # Main menu
 def main():
-    key = initialize_key()
+    key = check_main_password(input('Enter your password\n'))
 
     while True:
         print("\nPassword Manager Menu:")
@@ -78,7 +65,7 @@ def main():
                     print("Password not found!")
 
         elif choice=="3":
-            list_passwords()
+            list_passwords(key)
 
         elif choice == "4":
             print("Exiting Password Manager.")

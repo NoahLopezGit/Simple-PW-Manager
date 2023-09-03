@@ -1,3 +1,6 @@
 passwords.txt
 encryption_key.key
 pwman_venv
+__pycache__
+salt_config.txt
+passwords.txt
